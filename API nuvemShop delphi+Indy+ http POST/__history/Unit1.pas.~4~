@@ -1,0 +1,103 @@
+unit Unit1;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, rest.JSON;
+
+type
+  Tvariants = class
+     private
+       Fstock: string;
+     public
+       property stock: string read Fstock write Fstock;
+   end;
+
+   Tphoto = class
+     private
+       Fsrc: string;
+         property src: string read Fsrc write Fsrc;
+   end;
+
+   Tproduto = class
+     private
+       Fname: string;
+       Fdescription: string;
+       Fvariants: Tarray<Tvariants>;
+       Fimages: Tarray<Tphoto>;
+     public
+       property name: string read Fname write Fname;
+       property description: string read Fdescription write Fdescription;
+       property variants: Tarray<Tvariants> read Fvariants write Fvariants;
+       property images: Tarray<Tphoto> read Fimages write Fimages;
+   end;
+
+
+  TForm1 = class(TForm)
+    EditNome: TEdit;
+    Label1: TLabel;
+    EditStock: TEdit;
+    Label2: TLabel;
+    Edit3: TEdit;
+    Label3: TLabel;
+    EditDesc: TEdit;
+    Label4: TLabel;
+    Button1: TButton;
+    EditURL: TEdit;
+    Label5: TLabel;
+    procedure Button1Click(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    procedure pesquisar;
+  end;
+
+var
+  Form1: TForm1;
+
+implementation
+
+{$R *.dfm}
+
+procedure TForm1.Button1Click(Sender: TObject);
+begin
+  pesquisar;
+end;
+
+
+procedure Tform1.pesquisar;
+var
+  Aproduto: Tproduto;
+  Aphoto: Tphoto;
+  Avariants: Tvariants;
+  AstringJson: string;
+begin
+  Aproduto.Create;
+try
+  Aproduto.name := editNome.Text;
+  Aproduto.description := editDesc.Text;
+
+  SetLength(AProduto.Fvariants, 0);
+
+  Avariants := Tvariants.Create;
+  Avariants.stock := editStock.Text;
+
+
+  SetLength(AProduto.Fvariants, length(AProduto.Fvariants) +1);
+  AProduto.Fvariants[High(AProduto.Fvariants)] := Avariants;
+
+  SetLength(AProduto.Fimages, 1);
+  AProduto.Fimages[High(AProduto.Fimages)] := Aphoto;
+
+
+  Aphoto.Create;
+  Aphoto.src := editURL.Text;
+
+
+finally
+     Aproduto.Free;
+end;
+
+end;
+end.

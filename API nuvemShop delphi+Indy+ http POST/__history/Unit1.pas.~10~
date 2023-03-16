@@ -1,0 +1,163 @@
+unit Unit1;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, rest.JSON, IdIOHandler, IdIOHandlerSocket, IdIOHandlerStack,
+  IdSSL, IdSSLOpenSSL, IdBaseComponent, IdComponent, IdTCPConnection, IdTCPClient, IdHTTP;
+
+type
+  Tvariants = class
+     private
+       Fstock: string;
+       Fprice: string;
+       FGender: string;
+       FBarCode: integer;
+       FIdSku: integer;
+       Fweight: string;
+       Fwidth: string;
+       Fheight: string;
+     public
+       property stock: string read Fstock write Fstock;
+       property price: string read Fprice write Fprice;
+       property gender: string read Fgender write Fgender;
+       property barcode: integer read Fbarcode write Fbarcode;
+       property sku: integer read FIdSku write FIdSku;
+       property weight: string read Fweight write Fweight;
+       property width: string read Fwidth write Fwidth;
+       property height: string read Fheight write Fheight;
+   end;
+
+   Tproduto = class
+     private
+       Fid: integer;
+       Fname: string;
+       Fdescription: string;
+       Fvariants: Tarray<Tvariants>;
+       Fcategories: Tarray<string>;
+       Fbrand: string;
+     public
+       property id: integer read Fid write Fid;
+       property name: string read Fname write Fname;
+       property description: string read Fdescription write Fdescription;
+       property variants: Tarray<Tvariants> read Fvariants write Fvariants;
+       property categories: Tarray<string> read Fcategories write Fcategories;
+       property brand: string read Fbrand write Fbrand;
+   end;
+
+  TForm1 = class(TForm)
+    EditNome: TEdit;
+    Label1: TLabel;
+    EditStock: TEdit;
+    Label2: TLabel;
+    EditPreco: TEdit;
+    Label3: TLabel;
+    EditDesc: TEdit;
+    Label4: TLabel;
+    Button1: TButton;
+    Memo1: TMemo;
+    EditCategoria: TEdit;
+    Label5: TLabel;
+    EditCod: TEdit;
+    Label6: TLabel;
+    EditGenero: TEdit;
+    Label7: TLabel;
+    EditMarca: TEdit;
+    Label8: TLabel;
+    EditCodBar: TEdit;
+    Label9: TLabel;
+    EditPeso: TEdit;
+    Label10: TLabel;
+    EditLargura: TEdit;
+    Label11: TLabel;
+    EditAltura: TEdit;
+    Label12: TLabel;
+    IdHTTP: TIdHTTP;
+    IdSSLIOHandlerSocketOpenSSL: TIdSSLIOHandlerSocketOpenSSL;
+    procedure Button1Click(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    procedure pesquisar;
+  end;
+
+var
+  Form1: TForm1;
+
+implementation
+
+{$R *.dfm}
+
+procedure TForm1.Button1Click(Sender: TObject);
+begin
+  pesquisar;
+end;
+
+
+procedure Tform1.pesquisar;
+var
+  AURL: String;
+  Aproduto: Tproduto;
+  Avariants: Tvariants;
+  AstringJson: string;
+  AstringJsonRequire: TStringStream;
+begin
+  Aproduto := Tproduto.Create;
+try
+  Aproduto.name := editNome.Text;
+  Aproduto.description := editDesc.Text;
+  Aproduto.id := StrToInt(EditCod.Text);
+  Aproduto.brand := EditMarca.Text;
+   //fim
+
+  SetLength(AProduto.Fvariants, 0);
+  Avariants := Tvariants.Create;
+  Avariants.stock := editStock.Text;
+  Avariants.price := (EditPreco.Text);
+  Avariants.gender := EditGenero.Text;
+  Avariants.gender := EditGenero.Text;
+  Avariants.barcode := StrToInt(EditCodBar.Text);
+  Avariants.weight := (EditPreco.Text);
+  Avariants.width := (EditLargura.Text);
+  Avariants.height := (EditAltura.Text);
+
+  SetLength(AProduto.Fvariants, length(AProduto.Fvariants) +1);
+  AProduto.Fvariants[High(AProduto.Fvariants)] := Avariants;
+   //fim
+
+  SetLength(AProduto.Fcategories, 0);
+  SetLength(AProduto.Fcategories, length(AProduto.Fcategories) +1);
+  Aproduto.Fcategories[High(AProduto.Fcategories)] := editCategoria.text;
+
+  //fim
+  AstringJson := Tjson.ObjectToJsonString(Aproduto);
+  memo1.Lines.Text := AstringJson;
+
+  //fim
+
+  AURL := 'https://api.tiendanube.com/v1/2933236/products';
+
+  IdSSLIOHandlerSocketOpenSSL.SSLOptions.Method := sslvTLSv1_2;
+  IdHTTP.ReadTimeout := 5000;
+  IdHTTP.Response.ContentType := 'application/json';
+  IdHTTP.Response.Charset := 'UTF-8';
+  IdHTTP.Request.CustomHeaders.Values['Authentication'] := 'bearer ef035e9a6ad43f2e8d6374a9bf5a32ec122afca1';
+  IdHTTP.Request.CustomHeaders.Values['User-Agent'] := 'VEXCOM SISTEMAS (suporte@vexcomsistemas.com.br)';
+
+
+  AstringJsonRequire := TstringStream.Create;
+  AstringJson := Tjson.ObjectToJsonString(Aproduto);
+  try
+    IdHTTP.Post(AURL,AstringJsonRequire);
+  finally
+
+  end;
+finally
+  Aproduto.Free;
+  AstringJsonRequire.Free;
+end;
+
+end;
+end.
+
