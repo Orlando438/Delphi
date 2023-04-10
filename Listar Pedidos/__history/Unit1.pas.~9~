@@ -1,0 +1,171 @@
+unit Unit1;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, IdIOHandler, IdIOHandlerSocket, IdIOHandlerStack, IdSSL,
+  IdSSLOpenSSL, IdBaseComponent, IdComponent, IdTCPConnection, IdTCPClient, IdHTTP, rest.json;
+
+type
+
+  TAddress = class
+  private
+    FAddress: string;
+    FCity: string;
+    FCountry: string;
+    FNumber: string;
+  public
+    property Address: string read FAddress write FAddress;
+    property City: string read FCity write FCity;
+    property Country: string read FCountry write FCountry;
+    property Number: string read FNumber write FNumber;
+  end;
+
+  TCustomer = class
+  private
+    FId: Integer;
+    FName: string;
+    FEmail: string;
+    FIdentification: string;
+    FPhone: string;
+    FNote: string;
+    FDefaultAddress: TAddress;
+    FAddresses: TArray<TAddress>;
+  public
+    property Id: Integer read FId write FId;
+    property Name: string read FName write FName;
+    property Email: string read FEmail write FEmail;
+    property Identification: string read FIdentification write FIdentification;
+    property Phone: string read FPhone write FPhone;
+    property Note: string read FNote write FNote;
+    property DefaultAddress: TAddress read FDefaultAddress write FDefaultAddress;
+    property Addresses: TArray<TAddress> read FAddresses write FAddresses;
+  end;
+
+  TProduct = class
+  private
+    FId: Integer;
+    FDepth: Double;
+    FHeight: Double;
+    FName: string;
+    FPrice: Currency;
+    FProductId: Integer;
+    FQuantity: Integer;
+    FWeight: Double;
+    FWidth: Double;
+    FVariantId: string;
+    FVariantValues: TArray<string>;
+    FProperties: TArray<string>;
+    FSku: string;
+    FBarcode: string;
+  public
+    property Id: Integer read FId write FId;
+    property Depth: Double read FDepth write FDepth;
+    property Height: Double read FHeight write FHeight;
+    property Name: string read FName write FName;
+    property Price: Currency read FPrice write FPrice;
+    property ProductId: Integer read FProductId write FProductId;
+    property Quantity: Integer read FQuantity write FQuantity;
+    property Weight: Double read FWeight write FWeight;
+    property Width: Double read FWidth write FWidth;
+    property VariantId: string read FVariantId write FVariantId;
+    property VariantValues: TArray<string> read FVariantValues write FVariantValues;
+    property Properties: TArray<string> read FProperties write FProperties;
+    property Sku: string read FSku write FSku;
+    property Barcode: string read FBarcode write FBarcode;
+  end;
+
+  Tpedido = class
+  private
+    FContactEmail: string;
+    FContactName: string;
+    FContactPhone: string;
+    FSubtotal: Currency;
+    FDiscount: Currency;
+    FAttributes: TArray<string>;
+    FCustomer: TCustomer;
+    FProducts: TArray<TProduct>;
+    FStatus: string;
+    FPaymentStatus: string;
+    FShippingStatus: string;
+  public
+    property ContactEmail: string read FContactEmail write FContactEmail;
+    property ContactName: string read FContactName write FContactName;
+    property ContactPhone: string read FContactPhone write FContactPhone;
+    property Subtotal: Currency read FSubtotal write FSubtotal;
+    property Discount: Currency read FDiscount write FDiscount;
+    property Attributes: TArray<string> read FAttributes write FAttributes;
+	property Customer: TCustomer read FCustomer write FCustomer;
+    property Products: TArray<TProduct> read FProducts write FProducts;
+    property Status: string read FStatus write FStatus;
+    property PaymentStatus: string read FPaymentStatus write FPaymentStatus;
+    property ShippingStatus: string read FShippingStatus write FShippingStatus;
+  end;
+
+  TListaPedido = class
+  private
+    FResult: TArray<Tpedido>;
+  public
+    property Result: TArray<Tpedido> read FResult write FResult;
+  end;
+
+
+  TForm1 = class(TForm)
+    Memo1: TMemo;
+    Edit1: TEdit;
+    Label1: TLabel;
+    Button1: TButton;
+    IdHTTP: TIdHTTP;
+    IdSSLIOHandlerSocketOpenSSL: TIdSSLIOHandlerSocketOpenSSL;
+    procedure Button1Click(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    procedure pesquisar;
+  end;
+
+var
+  Form1: TForm1;
+
+implementation
+
+{$R *.dfm}
+
+procedure TForm1.Button1Click(Sender: TObject);
+begin
+  pesquisar;
+end;
+
+procedure Tform1.pesquisar;
+var
+  AURL: string;
+  Pedido: TPedido;
+  JsonString: string;
+  AJsonReturn: TstringStream;
+begin
+  AURL := 'https://api.tiendanube.com/v1/2933236/orders';
+
+  IdSSLIOHandlerSocketOpenSSL.SSLOptions.Method := sslvTLSv1_2;
+  IdHTTP.ReadTimeout := 5000;
+  IdHTTP.Request.ContentType := 'application/json';
+  IdHTTP.Request.Charset := 'UTF-8';
+  IdHTTP.Request.CustomHeaders.Values['Authentication'] := 'bearer ab66920be823ba82b281c7289576e35c20d0a1c0';
+  IdHTTP.Request.CustomHeaders.Values['User-Agent'] := 'VEXCOM SISTEMAS (suporte@vexcomsistemas.com.br)';
+
+  AJsonReturn := TStringStream.Create;
+  try
+    IdHTTP.Get(AURL, AJsonReturn);
+    JsonString := AJsonReturn.DataString;
+    JsonString := StringReplace(JsonString, #10, '', [rfReplaceAll]);
+    JsonString := StringReplace(JsonString, #13#10, '', [rfReplaceAll]);
+    JsonString := '{"Result": ' + JsonString + '}';
+
+    Memo1.Lines.Text := JsonString;
+    Pedido := TJson.JsonToObject<TListaPedido>(JsonString);
+    finally
+  end;
+
+end;
+
+end.
