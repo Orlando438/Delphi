@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2023/02/02 11:49:35.000.872,=C:\Users\vexco\OneDrive\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2023/02/03 08:06:44.000.750,=C:\Users\vexco\OneDrive\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2023/02/03 08:17:59.000.559,=C:\Users\vexco\OneDrive\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2023/02/17 09:22:55.000.912,=C:\Users\vexco\OneDrive\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2023/04/12 08:23:37.000.589,=C:\Users\vexco\OneDrive\Documents\Embarcadero\Studio\Projects\Unit2.pas</Transaction>
+    <Transaction>2023/05/08 15:06:38.000.147,=C:\Users\vexco\OneDrive\Documents\Embarcadero\Studio\Projects\Unit2.pas</Transaction>
+    <Transaction>2023/05/22 14:19:20.000.184,=C:\Users\vexco\OneDrive\Documents\Embarcadero\Studio\Projects\Unit2.pas</Transaction>
+    <Transaction>2023/05/22 14:26:27.000.613,C:\Users\vexco\OneDrive\Documents\Embarcadero\Studio\Projects\Unit2.pas=C:\Users\vexco\OneDrive\Área de Trabalho\Testar CpfCnpj\Unit2.pas</Transaction>
+    <Transaction>2023/05/22 14:26:27.000.613,C:\Users\vexco\OneDrive\Documents\Embarcadero\Studio\Projects\Unit2.dfm=C:\Users\vexco\OneDrive\Área de Trabalho\Testar CpfCnpj\Unit2.dfm</Transaction>
+    <Transaction>2023/05/22 14:26:32.000.492,C:\Users\vexco\OneDrive\Documents\Embarcadero\Studio\Projects\Project1.dproj=C:\Users\vexco\OneDrive\Área de Trabalho\Testar CpfCnpj\Project1.dproj</Transaction>
+    <Transaction>2023/05/22 16:09:52.000.277,=C:\Users\vexco\OneDrive\Área de Trabalho\Testar CpfCnpj\Unit1.pas</Transaction>
+    <Transaction>2023/05/22 16:12:08.000.553,C:\Users\vexco\OneDrive\Área de Trabalho\Testar CpfCnpj\UnitGetCpfValido.pas=C:\Users\vexco\OneDrive\Área de Trabalho\Testar CpfCnpj\Unit1.pas</Transaction>
+    <Transaction>2023/05/22 16:21:29.000.963,=C:\Users\vexco\OneDrive\Área de Trabalho\Testar CpfCnpj\Unit1.pas</Transaction>
+    <Transaction>2023/05/22 16:21:51.000.278,C:\Users\vexco\OneDrive\Área de Trabalho\Testar CpfCnpj\Unit1.pas=C:\Users\vexco\OneDrive\Área de Trabalho\Testar CpfCnpj\UnitGetValidadorCpf.pas</Transaction>
+  </Transactions>
+</BorlandProject>
